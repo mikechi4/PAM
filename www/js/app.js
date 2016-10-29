@@ -23,6 +23,7 @@ angular.module('starter', ['ionic'])
   })
 })
 
+//route handler
   .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('login', {
@@ -33,8 +34,31 @@ angular.module('starter', ['ionic'])
       .state('signUp', {
         url: '/signup',
         // abstract: true,
-        templateUrl: 'templates/signup.html'
+        templateUrl: 'templates/signup.html',
+        controller:'signUpCtrl'
       });
 
     $urlRouterProvider.otherwise('/login');
-  });
+  })
+
+  //signupController handles the account creation
+  .controller('signUpCtrl', function($scope, signUpService){
+    $scope.createUser = function(email, newUser, newPassword) {
+      signUpService.createUser(email, newUser, newPassword);
+      console.log("User name: " + newUser +  " user email: " + email);
+    }
+  })
+
+  .service('signUpService', function($http){
+    this.createUser = function(email, newUser, newPassword) {
+       $http({
+        method:'POST',
+        url: 'http://localhost:3000/signUp',
+        data: {
+          email: email,
+          user_name: newUser,
+          password: newPassword
+        }
+      })
+    }
+  })
