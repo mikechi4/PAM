@@ -7,23 +7,18 @@
         <input type="email" ng-model="email" name="email" placeholder="youremail@domain.com" required/>
       </label>
       <label class="item item-input item-stacked-label">
-        <span class="input-label" >User Name</span>
-        <input type="text" ng-model="newUser" name="newUser" ng-minlength="6" placeholder="Enter user name" required/>
-      </label>
-      <label class="item item-input item-stacked-label">
         <span class="input-label" >Password</span>
         <input type="password" ng-model="newPassword"  name="password" ng-minlength="6" placeholder="Must be at least 6 characters" required/>
       </label>
     </div>
     <div class="padding">
-      <p ng-show="myForm.newUser.$error.required">* Username is required</p>
-      <p ng-show="myForm.email.$invalid && !myForm.email.$pristine">* Must be a valid email</p>
-      <p ng-show="myForm.newUser.$error.minlength">* Username longer than 6 characters</p>
+      <p ng-show="myForm.email.$error.required">* Username is required</p>
+      <p ng-show="myForm.email.$invalid && !myForm.email.$pristine">* Username must be an email</p>
       <p ng-show="myForm.password.$error.required">* Password is required</p>
       <p ng-show="myForm.password.$error.minlength">* Password longer than 6 characters</p>
     </div>
     <div class="padding">
-      <button class="button button-calm" ng-click="createUser(email, newUser, newPassword)" ng-disabled="myForm.$invalid">
+      <button class="button button-calm" ng-click="createUser(email, newPassword)" ng-disabled="myForm.$invalid">
         <i class="icon ion-person-add"></i> Create Account
       </button>
     </div>

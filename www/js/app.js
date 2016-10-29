@@ -42,22 +42,21 @@ angular.module('starter', ['ionic'])
   })
 
   //-------- signupController & signUpService handles the account creation -----------
-  
+
   .controller('signUpCtrl', function($scope, signUpService){
-    $scope.createUser = function(email, newUser, newPassword) {
-      signUpService.createUser(email, newUser, newPassword);
-      console.log("User name: " + newUser +  " user email: " + email);
+    $scope.createUser = function(email,newPassword) {
+      signUpService.createUser(email,newPassword);
+      console.log("User name: " + email +  " user password: " + newPassword);
     }
   })
 
   .service('signUpService', function($http){
-    this.createUser = function(email, newUser, newPassword) {
+    this.createUser = function(email, newPassword) {
        $http({
         method:'POST',
         url: 'http://localhost:3000/signUp',
         data: {
           email: email,
-          user_name: newUser,
           password: newPassword
         }
       })

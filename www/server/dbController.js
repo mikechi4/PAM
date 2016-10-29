@@ -4,12 +4,12 @@ var db = app.get('db');
 module.exports= {
   addUser: function(req, res, next){
     var newUser = {
-      user_name: req.body.user_name,
       password: req.body.password,
       email: req.body.email
     }
+    console.log(newUser.email);
 
-    db.add_user([newUser.user_name, newUser.password, newUser.email], function(err, users) {
+    db.add_user([newUser.password, newUser.email], function(err, users) {
       res.status(200).json(users);
     })
   },
