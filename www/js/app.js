@@ -41,7 +41,8 @@ angular.module('starter', ['ionic'])
     $urlRouterProvider.otherwise('/login');
   })
 
-  //signupController handles the account creation
+  //-------- signupController & signUpService handles the account creation -----------
+  
   .controller('signUpCtrl', function($scope, signUpService){
     $scope.createUser = function(email, newUser, newPassword) {
       signUpService.createUser(email, newUser, newPassword);
