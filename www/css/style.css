@@ -5,3 +5,37 @@
   justify-content: center;
   align-items: center;
 }
+
+.center {
+  text-align: center;
+}
+
+.underline{
+  text-decoration: underline;
+}
+
+.header .col {
+  background-color:lightgrey;
+}
+
+.col {
+  border: solid 1px grey;
+  border-bottom-style: none;
+  border-right-style: none;
+}
+
+.col:last-child {
+  border-right: solid 1px grey;
+}
+
+.row:last-child .col {
+  border-bottom: solid 1px grey;
+}
+
+input.spend-goal{
+  border: 1px solid #d4d4d4;
+}
+
+input {
+  text-align: center
+}

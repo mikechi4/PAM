@@ -1,0 +1,49 @@
+
+<ion-content class="padding">
+  <h1>Welcome</h1>
+  <div class="card padding summary">
+    <h4>Your spending goal for this month is:</h4>
+    <input type="text" name="name" placeholder="$0.00" ng-model="spendGoal" class="spend-goal">
+    <h5>Current total spent this month: {placeholder}</h5>
+  </div>
+
+  <div class="card padding transactions-summary">
+
+    <h4>Posted Transactions</h4>
+    Add a transaction<button ui-sref="transactions"><i class="icon ion-plus"></i></button>
+    <div class="row header">
+      <div class="col">
+        Name
+      </div>
+      <div class="col">
+        Amount
+      </div>
+      <div class="col">
+        Category
+      </div>
+      <div class="col">
+        Date
+      </div>
+      <div class="col">
+        Options
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        Chukorama
+      </div>
+      <div class="col">
+        $13
+      </div>
+      <div class="col">
+        Restaurant
+      </div>
+      <div class="col">
+        10/31
+      </div>
+      <div class="col">
+        Options
+      </div>
+    </div>
+  </div>
+  </ion-content>

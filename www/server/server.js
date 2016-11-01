@@ -21,8 +21,11 @@ app.set('db', massiveServer);
 var db = app.get('db');
 var controller = require('./dbController.js');
 
-app.get('/', controller.get);
+app.get('/login', controller.getUser);
+// remove after checking
+app.get('/transactions', controller.getTransactions);
 app.post('/signUp', controller.addUser);
+app.post('/transactions', controller.addTransaction);
 
 app.listen(port, function () {
   console.log("now listening on port... " + port);

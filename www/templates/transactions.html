@@ -1,0 +1,39 @@
+<ion-content class="padding center login">
+  <h2>Add a new transaction</h2>
+  <div class="list">
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Name</span>
+      <input type="text" placeholder="McDonald's" ng-model="name">
+    </label>
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Amount</span>
+      <input type="text" placeholder="0.00" ng-model="amountSpent">
+    </label>
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Date</span>
+      <input type="text" placeholder="MM/DD" ng-model="purchaseDate">
+    </label>
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Category</span> <br>
+      <select ng-model="category">
+        <option  ng-selected="category == restaurant" ng-value="restaurant"value="restaurant">Restaurant</option>
+        <option  ng-selected="category == transportation" ng-value="transportation"value="transportation">Transportation</option>
+        <option  ng-selected="category == grocery" ng-value="grocery"value="grocery">Grocery</option>
+        <option  ng-selected="category == travel" ng-value="travel"value="travel">Travel</option>
+        <option  ng-selected="category == merchandise" ng-value="merchandise"value="merchandise">Merchandise</option>
+        <option  ng-selected="category == medical" ng-value="medical"value="medical">Medical</option>
+        <option  ng-selected="category == business" ng-value="business"value="business">Business Service</option>
+        <option  ng-selected="category == other" ng-value="other" value="other">Other</option>
+      </select>
+    </label>
+  </div>
+
+<button class="button button-calm" ng-click="addTransaction(name, amountSpent, purchaseDate, category)" ui-sref="tabs.home"><i class="icon ion-plus"></i> Add</button>
+</div>
+  <!-- <div class="add-transaction-form">
+    <p>Name of Purchase:</p><input type="text" class="spend-goal input">
+    <p>Amount:</p><input type="text" class="spend-goal input">
+    <p>Category:</p><input type="text" class="spend-goal input">
+
+  </div> -->
+</ion-content>

@@ -2,7 +2,7 @@
 <ion-content class="padding login">
   <h1><i class="icon ion-card "></i></h1>
   <h1>PAM</h1>
-  <h5>Your Personal Account Manager</h5>
+  <h5>Your <span class="underline">P</span>ersonal <span class="underline">A</span>ccount <span class="underline">M</span>anager</h5>
 
   <div class="list">
     <label class="item item-input">
@@ -12,7 +12,7 @@
       <input type="password" placeholder="password" required ng-model="password">
     </label>
   </div>
-  <button class="button button-calm" ng-click="checkUser(username, password)"><i class="icon ion-log-in"></i> Login</button>
+  <button class="button button-calm" ng-click="checkUser(username, password)" ui-sref="tabs.home"><i class="icon ion-log-in"></i> Login</button>
 
   <p>Not registered?</p>
   <p>Sign up <span><a ui-sref="signUp">here</a></span>.</p>
