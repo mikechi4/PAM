@@ -22,10 +22,12 @@ var db = app.get('db');
 var controller = require('./dbController.js');
 
 app.get('/login', controller.getUser);
-// remove after checking
 app.get('/home', controller.getTransactions);
+app.get('/edit', controller.getTransactionsById);
 app.post('/signUp', controller.addUser);
 app.post('/transactions', controller.addTransaction);
+
+app.delete('/edit', controller.deleteTransaction);
 
 app.listen(port, function () {
   console.log("now listening on port... " + port);

@@ -53,7 +53,6 @@
               controller: 'homeCtrl'
             }
           }
-
         })
 
         .state('transactions', {
@@ -62,11 +61,12 @@
           controller: 'transactionsCtrl'
         })
 
-        // .state('eidt', {
-        //   url:'/edit/:id',
-        //   templateUrl: 'templates/edit.html'
-        //   // controller: 'transactionsCtrl'
-        // })
+        .state('edit', {
+          url:'/edit/?id=',
+          templateUrl: 'templates/edit.html',
+          controller: 'editCtrl'
+        })
+
       $urlRouterProvider.otherwise('/login');
     })
 
@@ -125,6 +125,7 @@
       //handles sum of all transactions to display on home page
       homeService.getTransactions().then(function(response) {
         $scope.transactions = response.data;
+          //get total of all transactions posted
           for(var i = 0; i < $scope.transactions.length; i++) {
             $scope.spendTotal += ($scope.transactions[i].amount * 1);
           }
@@ -165,6 +166,84 @@
           user_id: 21,
           name: name
         }
+      })
+    }
+  })
+
+  //-------- editCtrl handles addition of modification/deletion of existing transactions -----------
+  .controller('editCtrl', function($scope, editService, $stateParams){
+    var id = $stateParams.id;
+
+    $scope.category="";
+    $scope.categories = [
+    {
+      display: 'Restaurant',
+      value: 'Restaurant'
+    },
+    {
+      display: 'Transportation',
+      value: 'Transportation'
+    },
+    {
+      display: 'Grocery',
+      value: 'Grocery'
+    },
+    {
+      display: 'Travel',
+      value: 'Travel'
+    },
+    {
+      display: 'Merchandise',
+      value: 'Merchandise'
+    },
+    {
+      display: 'Medical',
+      value: 'Medical'
+    },
+    {
+      display: 'Business Service',
+      value: 'Business Service'
+    },
+    {
+      display: 'Other',
+      value: 'Other'
+    }
+
+    ]
+console.log('dis da id '+ id);
+    $scope.deleteTransaction = function(id){
+      console.log('dis da id in deleteTransaction '+ id);
+      editService.deleteTransaction(id);
+    }
+
+    $scope.getThisTransaction = function(id) {
+      console.log('dis da id in getTransactions '+ id);
+      editService.getThisTransaction(id).then(function(response){
+        $scope.data = response.data[0];
+        console.log($scope.data);
+        //bind values from service to input values on view
+        $scope.name = $scope.data.name;
+        $scope.amountSpent = $scope.data.amount;
+        $scope.category = $scope.data.category;
+        $scope.purchaseDate = $scope.data.purchase_date;
+      })
+    }
+    $scope.getThisTransaction(id);
+
+  })
+
+  .service('editService', function($http) {
+    this.getThisTransaction = function(id) {
+      return $http({
+        method:'GET',
+        url:'http://localhost:3000/edit/?id=' + id
+      })
+    }
+
+    this.deleteTransaction = function(id) {
+      $http({
+        method:'DELETE',
+        url:'http://localhost:3000/edit/?id=' + id
       })
     }
   })

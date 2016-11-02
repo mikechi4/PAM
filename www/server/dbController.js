@@ -24,7 +24,21 @@ module.exports= {
       res.status(200).json(users);
     })
   },
-  
+
+  getTransactionsById: function(req, res, next){
+    var t_id = req.query.id;
+    db.get_transactions_by_t_id([t_id],function(err, transactions) {
+      res.status(200).json(transactions);
+    })
+  },
+
+  deleteTransaction: function(req, res, next) {
+    var t_id = req.query.id;
+    db.delete_transaction([t_id], function(err, transaction){
+      res.status(200).end();
+    })
+  },
+
   addTransaction: function(req, res, next) {
     var newTransaction = {
       amount: req.body.amount,
