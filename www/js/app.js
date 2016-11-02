@@ -49,7 +49,8 @@
           url: '/home',
           views: {
             'home-tab': {
-              templateUrl: 'templates/home.html'
+              templateUrl: 'templates/home.html',
+              controller: 'homeCtrl'
             }
           }
 
@@ -60,6 +61,12 @@
           templateUrl: 'templates/transactions.html',
           controller: 'transactionsCtrl'
         })
+
+        // .state('eidt', {
+        //   url:'/edit/:id',
+        //   templateUrl: 'templates/edit.html'
+        //   // controller: 'transactionsCtrl'
+        // })
       $urlRouterProvider.otherwise('/login');
     })
 
@@ -107,6 +114,38 @@
     return deferred.promise;
   }
 })
+
+//-------- homeController & homeService handles retrieval of transactions-----------
+  .controller('homeCtrl', function($scope, homeService){
+
+
+    $scope.getTransactions = function() {
+      $scope.spendTotal = 0;
+      //getTransactions promise handles data from db transactions and
+      //handles sum of all transactions to display on home page
+      homeService.getTransactions().then(function(response) {
+        $scope.transactions = response.data;
+          for(var i = 0; i < $scope.transactions.length; i++) {
+            $scope.spendTotal += ($scope.transactions[i].amount * 1);
+          }
+        $scope.spendTotal = $scope.spendTotal.toFixed(2);
+        return $scope.spendTotal;
+
+
+      })
+    }
+    $scope.getTransactions();
+  })
+
+  .service('homeService', function($http){
+    this.getTransactions = function(){
+      return $http({
+        method: 'GET',
+        url:'http://localhost:3000/home'
+      });
+    }
+  })
+
 //-------- transactionsCtrl handles addition of new transactions -----------
   .controller('transactionsCtrl', function($scope, transactionsService){
     $scope.addTransaction = function(name, amountSpent, purchaseDate, category){

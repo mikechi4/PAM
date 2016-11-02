@@ -4,13 +4,19 @@
   <div class="card padding summary">
     <h4>Your spending goal for this month is:</h4>
     <input type="text" name="name" placeholder="$0.00" ng-model="spendGoal" class="spend-goal">
-    <h5>Current total spent this month: {placeholder}</h5>
+    <h5>Current total spent this month: ${{spendTotal}}</h5>
+    <h5>Current budget fulfilment: {{(spendTotal/spendGoal) * 100 | number: 2}}%</h5>
   </div>
 
   <div class="card padding transactions-summary">
+    <div class="transactions-title">
+      <h4>Posted Transactions</h4>
+      <div class="uh">
+        Add a transaction<button ui-sref="transactions"><i class="icon ion-plus"></i></button>
+      </div>
 
-    <h4>Posted Transactions</h4>
-    Add a transaction<button ui-sref="transactions"><i class="icon ion-plus"></i></button>
+    </div>
+
     <div class="row header">
       <div class="col">
         Name
@@ -28,21 +34,21 @@
         Options
       </div>
     </div>
-    <div class="row">
+    <div class="row" ng-repeat="transaction in transactions">
       <div class="col">
-        Chukorama
+        {{transaction.name}}
       </div>
       <div class="col">
-        $13
+        ${{transaction.amount}}
       </div>
       <div class="col">
-        Restaurant
+        {{transaction.category}}
       </div>
       <div class="col">
-        10/31
+        {{transaction.purchase_date}}
       </div>
       <div class="col">
-        Options
+        <a href="#">Edit</a>
       </div>
     </div>
   </div>

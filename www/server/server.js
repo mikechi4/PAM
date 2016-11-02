@@ -23,7 +23,7 @@ var controller = require('./dbController.js');
 
 app.get('/login', controller.getUser);
 // remove after checking
-app.get('/transactions', controller.getTransactions);
+app.get('/home', controller.getTransactions);
 app.post('/signUp', controller.addUser);
 app.post('/transactions', controller.addTransaction);
 

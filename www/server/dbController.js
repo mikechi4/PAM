@@ -24,6 +24,7 @@ module.exports= {
       res.status(200).json(users);
     })
   },
+  
   addTransaction: function(req, res, next) {
     var newTransaction = {
       amount: req.body.amount,

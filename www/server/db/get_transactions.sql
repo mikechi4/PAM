@@ -1,1 +1,1 @@
-select * from transactions;
+select * from transactions where user_id = 21;
