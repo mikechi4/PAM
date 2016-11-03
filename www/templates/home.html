@@ -11,44 +11,42 @@
   <div class="card padding transactions-summary">
     <div class="transactions-title">
       <h4>Posted Transactions</h4>
-      <div class="uh">
-        Add a transaction<button ui-sref="transactions"><i class="icon ion-plus"></i></button>
-      </div>
+        Add a transaction<button ng-click="addTransPopup()"><i class="icon ion-plus"></i></button>
 
     </div>
 
     <div class="row header">
-      <div class="col">
+      <div class="col col-20">
         Name
       </div>
-      <div class="col">
+      <div class="col col-20">
         Amount
       </div>
-      <div class="col">
+      <div class="col col-20">
         Category
       </div>
-      <div class="col">
+      <div class="col col-20">
         Date
       </div>
-      <div class="col">
+      <div class="col col-20">
         Options
       </div>
     </div>
     <div class="row" ng-repeat="transaction in transactions">
-      <div class="col">
+      <div class="col col-20">
         {{transaction.name}}
       </div>
-      <div class="col">
+      <div class="col col-20">
         ${{transaction.amount}}
       </div>
-      <div class="col">
+      <div class="col col-20">
         {{transaction.category}}
       </div>
-      <div class="col">
+      <div class="col col-20">
         {{transaction.purchase_date}}
       </div>
-      <div class="col">
-        <a ui-sref="edit({id: transaction.transaction_id})">Edit/Delete</a>
+      <div class="col col-20">
+        <a ui-sref="edit({id: transaction.transaction_id})">Edit</a>
       </div>
     </div>
   </div>

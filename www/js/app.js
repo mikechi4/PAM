@@ -67,6 +67,15 @@
           controller: 'editCtrl'
         })
 
+        .state('tabs.settings', {
+          url: '/settings',
+          views: {
+            'settings-tab': {
+              templateUrl: 'templates/settings.html',
+              controller: 'settingsCtrl'
+            }
+          }
+        })
       $urlRouterProvider.otherwise('/login');
     })
 
@@ -116,9 +125,38 @@
 })
 
 //-------- homeController & homeService handles retrieval of transactions-----------
-  .controller('homeCtrl', function($scope, homeService){
+  .controller('homeCtrl', function($scope, $ionicPopup, homeService){
 
+    $scope.addTransPopup = function(){
+      $scope.data={}
+      var addPopup = $ionicPopup.show({
+        // template: '<input type="text" ng-model="data.name">',
+        templateUrl: '/templates/popup.html',
+        title: 'Add a Transaction',
+        scope: $scope,
+        buttons: [
+          {
+            text:'Cancel'
+          },
+          {
+            text:'Submit',
+            type:'button-positive',
+            onTap: function(e) {
+              // $scope.returnName($scope.data.name);
+              $scope.addTransaction($scope.data.name, $scope.data.amountSpent, $scope.data.purchaseDate, $scope.data.category);
+            }
+          }
+        ]
+      })
+    }
 
+    $scope.addTransaction = function(name, amountSpent, purchaseDate, category){
+      homeService.addTransaction(name, amountSpent, purchaseDate, category);
+    }
+
+    $scope.returnTrans = function(name, amount, purchaseDate) {
+      console.log('from return name ' + name);
+    }
     $scope.getTransactions = function() {
       $scope.spendTotal = 0;
       //getTransactions promise handles data from db transactions and
@@ -145,16 +183,7 @@
         url:'http://localhost:3000/home'
       });
     }
-  })
 
-//-------- transactionsCtrl handles addition of new transactions -----------
-  .controller('transactionsCtrl', function($scope, transactionsService){
-    $scope.addTransaction = function(name, amountSpent, purchaseDate, category){
-      transactionsService.addTransaction(name, amountSpent, purchaseDate, category);
-    }
-  })
-
-  .service('transactionsService', function($http){
     this.addTransaction = function(name, amountSpent, purchaseDate, category) {
        $http({
         method:'POST',
@@ -169,6 +198,29 @@
       })
     }
   })
+
+//-------- transactionsCtrl handles addition of new transactions -----------
+  // .controller('transactionsCtrl', function($scope, transactionsService){
+  //   $scope.addTransaction = function(name, amountSpent, purchaseDate, category){
+  //     transactionsService.addTransaction(name, amountSpent, purchaseDate, category);
+  //   }
+  // })
+  //
+  // .service('transactionsService', function($http){
+  //   this.addTransaction = function(name, amountSpent, purchaseDate, category) {
+  //      $http({
+  //       method:'POST',
+  //       url: 'http://localhost:3000/transactions',
+  //       data: {
+  //         amount: amountSpent,
+  //         category: category,
+  //         purchase_date: purchaseDate,
+  //         user_id: 21,
+  //         name: name
+  //       }
+  //     })
+  //   }
+  // })
 
   //-------- editCtrl handles addition of modification/deletion of existing transactions -----------
   .controller('editCtrl', function($scope, editService, $stateParams){
@@ -261,3 +313,8 @@
       })
     }
   })
+
+    //-------- settingsCtrl handles user settings -----------
+    .controller('settingsCtrl', function($scope){
+      $scope.message = 'hello'
+    })

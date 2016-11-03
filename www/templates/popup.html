@@ -1,0 +1,15 @@
+Transaction Name<input type="text" placeholder="McDonald's" ng-model="data.name">
+Amount <input type="text" placeholder="0.00" ng-model="data.amountSpent">
+Purchase Date <input type="text" placeholder="MM/DD" ng-model="data.purchaseDate">
+<span class="input-label">Category</span> <br>
+<select ng-model="data.category">
+  <option  ng-selected="category == restaurant" ng-value="restaurant"value="restaurant">Restaurant</option>
+  <option  ng-selected="category == transportation" ng-value="transportation"value="transportation">Transportation</option>
+  <option  ng-selected="category == grocery" ng-value="grocery"value="grocery">Grocery</option>
+  <option  ng-selected="category == travel" ng-value="travel"value="travel">Travel</option>
+  <option  ng-selected="category == merchandise" ng-value="merchandise"value="merchandise">Merchandise</option>
+  <option  ng-selected="category == medical" ng-value="medical"value="medical">Medical</option>
+  <option  ng-selected="category == business" ng-value="business"value="business">Business Service</option>
+  <option  ng-selected="category == other" ng-value="other" value="other">Other</option>
+</select>
+</label>
