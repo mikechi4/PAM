@@ -210,17 +210,13 @@
     }
 
     ]
-console.log('dis da id '+ id);
     $scope.deleteTransaction = function(id){
-      console.log('dis da id in deleteTransaction '+ id);
       editService.deleteTransaction(id);
     }
 
     $scope.getThisTransaction = function(id) {
-      console.log('dis da id in getTransactions '+ id);
       editService.getThisTransaction(id).then(function(response){
         $scope.data = response.data[0];
-        console.log($scope.data);
         //bind values from service to input values on view
         $scope.name = $scope.data.name;
         $scope.amountSpent = $scope.data.amount;
@@ -230,7 +226,11 @@ console.log('dis da id '+ id);
     }
     $scope.getThisTransaction(id);
 
+    $scope.updateTransaction = function(id, name, amountSpent, purchaseDate, category) {
+      editService.updateTransaction(id, name, amountSpent, purchaseDate, category);
+    }
   })
+
 
   .service('editService', function($http) {
     this.getThisTransaction = function(id) {
@@ -244,6 +244,20 @@ console.log('dis da id '+ id);
       $http({
         method:'DELETE',
         url:'http://localhost:3000/edit/?id=' + id
+      })
+    }
+
+    this.updateTransaction = function(id, name, amountSpent, purchaseDate, category) {
+      $http({
+        method:'PUT',
+        url:'http://localhost:3000/edit',
+        data: {
+          transaction_id: id,
+          amount: amountSpent,
+          category: category,
+          purchaseDate: purchaseDate,
+          name: name
+        }
       })
     }
   })

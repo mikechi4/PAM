@@ -26,6 +26,7 @@ app.get('/home', controller.getTransactions);
 app.get('/edit', controller.getTransactionsById);
 app.post('/signUp', controller.addUser);
 app.post('/transactions', controller.addTransaction);
+app.put('/edit', controller.updateTransaction);
 
 app.delete('/edit', controller.deleteTransaction);
 

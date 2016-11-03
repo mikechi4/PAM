@@ -52,5 +52,20 @@ module.exports= {
     ,function(err, users) {
       res.status(200).json(users);
     })
+  },
+
+  updateTransaction: function(req, res, next){
+    var editTransaction = {
+      transaction_id: req.body.transaction_id,
+      amount: req.body.amount,
+      category: req.body.category,
+      purchase_date: req.body.purchaseDate,
+      name: req.body.name
+    }
+    
+    db.update_transaction([editTransaction.amount, editTransaction.category, editTransaction.purchase_date, editTransaction.name, editTransaction.transaction_id]
+    ,function(err, users){
+      res.status(200).end();
+    })
   }
 }
