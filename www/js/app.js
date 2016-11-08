@@ -89,7 +89,7 @@
 
     .service('signUpService', function($http){
       this.createUser = function(email, newPassword) {
-         $http({
+         return $http({
           method:'POST',
           url: 'http://localhost:3000/signUp',
           data: {
@@ -102,26 +102,30 @@
 
 //-------- loginController & loginService handles the account creation -----------
 
-.controller('loginCtrl', function($scope, loginService){
-  $scope.checkUser = function(username, password) {
-    loginService.checkUser(username, password).then(function(response){
-      $scope.data = response.user_id;
-    });
-  }
+.controller('loginCtrl', function($scope, $http, loginService, $state) {
+    $scope.login = function(email, password) {
+      loginService.login(email, password);
+      if(sessionStorage.myToken) {
+        $state.go('tabs.home');
+      }
+    }
 })
 
-.service('loginService', function($http, $q){
-  this.checkUser = function(username, password) {
-    var deferred = $q.defer();
-     $http({
-      method: 'GET',
-      url: 'http://localhost:3000/login'
-    }).then(function(response){
+.service('loginService', function($http) {
+  this.login = function(email, password) {
+     return $http({
+        method: 'POST',
+        url: 'http://localhost:3000/auth',
+        data: {
+            email: email,
+            password: password
+        }
+    }).then(function(res) {
 
-      deferred.resolve(response)
+      sessionStorage.setItem('myToken', res.data.token);
+      this.user = res.data.user;
     })
-    return deferred.promise;
-  }
+  };
 })
 
 //-------- homeController & homeService handles retrieval of transactions-----------
@@ -154,8 +158,24 @@
       homeService.addTransaction(name, amountSpent, purchaseDate, category);
     }
 
-    $scope.returnTrans = function(name, amount, purchaseDate) {
-      console.log('from return name ' + name);
+    $scope.editPopup = function(id) {
+      console.log(id);
+      var editTrans = $ionicPopup.show({
+        templateUrl:'/templates/edit.html',
+        title: 'Edit/Delete Transaction',
+        scope: $scope,
+        buttons:[
+          {
+            text: 'Cancel'
+          },
+          {
+            text: 'Submit'
+          },
+          {
+            text: 'Delete'
+          }
+        ]
+      })
     }
     $scope.getTransactions = function() {
       $scope.spendTotal = 0;

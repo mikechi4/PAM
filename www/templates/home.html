@@ -46,7 +46,8 @@
         {{transaction.purchase_date}}
       </div>
       <div class="col col-20">
-        <a ui-sref="edit({id: transaction.transaction_id})">Edit</a>
+        <!-- <a ui-sref="edit({id: transaction.transaction_id})">Edit</a> -->
+        <a ng-click="editPopup({id: transaction.transaction_id})"">Edit</a>
       </div>
     </div>
   </div>

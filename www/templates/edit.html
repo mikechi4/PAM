@@ -1,4 +1,11 @@
-<ion-content class="padding center login">
+
+Name<input type="text" placeholder="{{data.name}}" ng-model="name">
+Amount<input type="text" placeholder="{{data.amount}}" ng-model="amountSpent">
+Purchase Date<input type="text" placeholder="{{data.purchase_date}}" ng-model="purchaseDate">
+Category<select ng-model="category" ng-options="option.value as option.display for option in categories">
+
+      </select>
+<!-- <ion-content class="padding center login">
   <h2>Edit/Delete Transactions</h2>
   <button ng-click="deleteTransaction(data.transaction_id)"><i class="icon ion-trash-a"></i></button>
   <div class="list">
@@ -25,4 +32,4 @@
 
 <button class="button button-calm" ng-click="updateTransaction(data.transaction_id, name, amountSpent, purchaseDate, category)" ui-sref="tabs.home"><i class="icon ion-edit"></i> Submit Changes</button>
 </div>
-</ion-content>
+</ion-content> -->
