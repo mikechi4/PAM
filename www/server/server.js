@@ -2,15 +2,12 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var massive = require('massive');
 var middleware = require('./middleware.js');
-
+var config = require('./config.js')
 //token stuff
 var jwt = require('jsonwebtoken');
 
 
-// var cors = require('cors');
-// var corsOptions = {
-//   origin: 'http://localhost:3000'
-// };
+var cors = require('cors');
 var port = 3000;
 
 var app = module.exports = express();
@@ -19,17 +16,83 @@ var massiveServer = massive.connectSync({
   connectionString: "postgres://postgres:january17@localhost/PAM"
 });
 
-
+app.use(cors());
 app.use(middleware.addHeaders);
 app.use(bodyParser.json());
-// app.use(cors(corsOptions));
 app.set('db', massiveServer);
 var db = app.get('db');
 var controller = require('./dbController.js');
 
-// app.get('/login', controller.getUser);
-//token stuff
-app.post('/auth', controller.getUser);
+/*
+ |--------------------------------------------------------------------------
+ | Login Required Middleware
+ |--------------------------------------------------------------------------
+ */
+function ensureAuthenticated(req, res, next) {
+  if (!req.header('Authorization')) {
+    return res.status(401).send({ message: 'Please make sure your request has an Authorization header' });
+  }
+  var token = req.header('Authorization').split(' ')[1];
+
+  var payload = null;
+  try {
+    payload = jwt.decode(token, config.TOKEN_SECRET);
+  }
+  catch (err) {
+    return res.status(401).send({ message: err.message });
+  }
+
+  if (payload.exp <= moment().unix()) {
+    return res.status(401).send({ message: 'Token has expired' });
+  }
+  req.user = payload.sub;
+  next();
+}
+
+/*
+ |--------------------------------------------------------------------------
+ | Log in with Email
+ |--------------------------------------------------------------------------
+ */
+app.post('/auth/login', function(req, res) {
+  var user = {
+    email: req.body.email,
+    password: req.body.password
+  }
+  console.log('declared user ' + user.email);
+  db.get_user([req.body.email], function(err, user){
+    if (err) throw err;
+
+    if (!user[0]) {
+      console.log('hit with no user');
+      res.json({ success: false, message: 'Authentication failed. User not found.' });
+    } else if (user) {
+
+      // check if password matches
+      if (user[0].password != req.body.password) {
+        console.log('hit with wrong password');
+        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+      }
+      else {
+        console.log('DINGDINGDINGDINGDINGDINGDING');
+        // if user is found and password is right
+        // create a token
+        jwt.sign(user[0], config.secret, {
+          expiresIn: 1440 // expires in 24 hours
+        }, function(err, token){
+          res.status(200).json({
+            token: token,
+            msg: 'ok',
+            user: req.body.email
+          })
+        })
+      }
+    }
+
+  })
+});
+
+// app.post('/auth/login', controller.getUser);
 
 app.get('/home', controller.getTransactions);
 app.get('/edit', controller.getTransactionsById);

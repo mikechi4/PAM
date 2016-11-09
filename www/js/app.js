@@ -3,7 +3,7 @@
   // angular.module is a global place for creating, registering and retrieving Angular modules
   // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
   // the 2nd parameter is an array of 'requires'
-  angular.module('starter', ['ionic'])
+  angular.module('starter', ['ionic', 'satellizer'])
 
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -102,31 +102,35 @@
 
 //-------- loginController & loginService handles the account creation -----------
 
-.controller('loginCtrl', function($scope, $http, loginService, $state) {
+.controller('loginCtrl', function($scope, $state, $auth) {
+// $scope.email = 'user@email.com';
+// $scope.password='password'
     $scope.login = function(email, password) {
-      loginService.login(email, password);
-      if(sessionStorage.myToken) {
-        $state.go('tabs.home');
+      $scope.user = {
+        email: email,
+        password: password
       }
+      console.log($scope.user);
+      $auth.login($scope.user)
+        .then(function(response) {
+          $auth.setToken(response.data.token);
+          $state.go('tabs.home');
+        })
     }
 })
 
-.service('loginService', function($http) {
-  this.login = function(email, password) {
-     return $http({
-        method: 'POST',
-        url: 'http://localhost:3000/auth',
-        data: {
-            email: email,
-            password: password
-        }
-    }).then(function(res) {
-
-      sessionStorage.setItem('myToken', res.data.token);
-      this.user = res.data.user;
-    })
-  };
-})
+// .service('loginService', function($http) {
+//   this.login = function() {
+//      return $http({
+//         method: 'POST',
+//         url: 'http://localhost:3000/auth/login'
+//     }).then(function(res) {
+//
+//       sessionStorage.setItem('myToken', res.data.token);
+//       this.user = res.data.user;
+//     })
+//   };
+// })
 
 //-------- homeController & homeService handles retrieval of transactions-----------
   .controller('homeCtrl', function($scope, $ionicPopup, homeService){
