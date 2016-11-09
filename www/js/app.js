@@ -3,7 +3,7 @@
   // angular.module is a global place for creating, registering and retrieving Angular modules
   // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
   // the 2nd parameter is an array of 'requires'
-  angular.module('starter', ['ionic', 'satellizer'])
+  angular.module('starter', ['ionic', 'satellizer', 'nvd3' ])
 
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -30,6 +30,9 @@
           url: '/login',
           templateUrl: 'templates/login.html',
           controller: 'loginCtrl'
+          // resolve: {
+          //   skipIfLoggedIn: skipIfLoggedIn
+          // }
         })
 
         .state('signUp', {
@@ -116,6 +119,9 @@
           $auth.setToken(response.data.token);
           $state.go('tabs.home');
         })
+        .catch(function(error){
+          $scope.error = error.data.message;
+        })
     }
 })
 
@@ -181,6 +187,7 @@
         ]
       })
     }
+
     $scope.getTransactions = function() {
       $scope.spendTotal = 0;
       //getTransactions promise handles data from db transactions and
@@ -191,13 +198,63 @@
           for(var i = 0; i < $scope.transactions.length; i++) {
             $scope.spendTotal += ($scope.transactions[i].amount * 1);
           }
-        $scope.spendTotal = $scope.spendTotal.toFixed(2);
-        return $scope.spendTotal;
 
+        //show the sum of all transactions, rounded to two decimals
+        $scope.spendTotal = $scope.spendTotal.toFixed(2);
 
       })
     }
+
+    // Used for populating d3Chart
+    $scope.getCategories = function(){
+      $scope.options = {
+        chart: {
+          type: 'pieChart',
+          height: 500,
+          x: function(d){return d.key;},
+          y: function(d){return d.y;},
+          showLabels: true,
+          duration: 500,
+          labelThreshold: 0.01,
+          labelSunbeamLayout: true,
+          legend: {
+              margin: {
+                  top: 5,
+                  right: 35,
+                  bottom: 5,
+                  left: 0
+              }
+          }
+        }
+      };
+
+      $scope.data = [];
+
+      homeService.getTransactions().then(function(response) {
+        var response = response.data;
+        for(var i = 0; i < response.length; i++) {
+          var ctgObj = {key: response[i].category, y: response[i].amount * 1};
+          if($scope.data.length == 0) {
+            $scope.data.push(ctgObj);
+          } else {
+            var flag = false;
+            for(var j = 0; j < $scope.data.length; j++){
+              if(ctgObj.key == $scope.data[j].key) {
+                $scope.data[j].y += ctgObj.y * 1
+                flag = true;
+              }
+            }
+            if(!flag){
+              $scope.data.push(ctgObj)
+            }
+          }
+        }
+      })
+
+    }
     $scope.getTransactions();
+    $scope.getCategories();
+
   })
 
   .service('homeService', function($http){

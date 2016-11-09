@@ -65,13 +65,13 @@ app.post('/auth/login', function(req, res) {
 
     if (!user[0]) {
       console.log('hit with no user');
-      res.json({ success: false, message: 'Authentication failed. User not found.' });
+      res.status(401).send({ success: false, message: 'Authentication failed. User not found.' });
     } else if (user) {
 
       // check if password matches
       if (user[0].password != req.body.password) {
         console.log('hit with wrong password');
-        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+        res.status(401).send({ success: false, message: 'Authentication failed. Wrong password.' });
       }
       else {
         console.log('DINGDINGDINGDINGDINGDINGDING');

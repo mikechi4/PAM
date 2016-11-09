@@ -47,8 +47,13 @@
       </div>
       <div class="col col-20">
         <!-- <a ui-sref="edit({id: transaction.transaction_id})">Edit</a> -->
-        <a ng-click="editPopup({id: transaction.transaction_id})"">Edit</a>
+        <a ng-click="editPopup({id: transaction.transaction_id})">Edit</a>
       </div>
     </div>
+  </div>
+
+  <div class="card padding summary">
+    <h4>View Your Spending</h4>
+    <nvd3 options="options" data="data"></nvd3>
   </div>
   </ion-content>
