@@ -39,3 +39,26 @@ input.spend-goal{
 input {
   text-align: center
 }
+
+.popup-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+#progress {
+ width: 100%;
+ border: 1px solid black;
+ position: relative;
+ padding: 3px;
+}
+
+#percent {
+ position: absolute;
+ left: 50%;
+}
+
+#bar {
+ height: 20px;
+ background-color: green;
+ width: 0%;
+}

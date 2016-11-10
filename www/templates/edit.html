@@ -3,7 +3,14 @@ Name<input type="text" placeholder="{{data.name}}" ng-model="name">
 Amount<input type="text" placeholder="{{data.amount}}" ng-model="amountSpent">
 Purchase Date<input type="text" placeholder="{{data.purchase_date}}" ng-model="purchaseDate">
 Category<select ng-model="category" ng-options="option.value as option.display for option in categories">
-
+  <option  ng-selected="category == restaurant" ng-value="restaurant"value="restaurant">Restaurant</option>
+  <option  ng-selected="category == transportation" ng-value="transportation"value="transportation">Transportation</option>
+  <option  ng-selected="category == grocery" ng-value="grocery"value="grocery">Grocery</option>
+  <option  ng-selected="category == travel" ng-value="travel"value="travel">Travel</option>
+  <option  ng-selected="category == merchandise" ng-value="merchandise"value="merchandise">Merchandise</option>
+  <option  ng-selected="category == medical" ng-value="medical"value="medical">Medical</option>
+  <option  ng-selected="category == business" ng-value="business"value="business">Business Service</option>
+  <option  ng-selected="category == other" ng-value="other" value="other">Other</option>
       </select>
 <!-- <ion-content class="padding center login">
   <h2>Edit/Delete Transactions</h2>

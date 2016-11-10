@@ -14,3 +14,10 @@ CREATE TABLE transactions
   purchase_date date,
   user_id integer REFERENCES Users(user_id)
 );
+
+CREATE TABLE budget
+(
+  budget_id SERIAL PRIMARY KEY,
+  user_id integer REFERENCES Users(user_id),
+  budget_amt integer
+);
