@@ -28,26 +28,26 @@ var controller = require('./dbController.js');
  | Login Required Middleware
  |--------------------------------------------------------------------------
  */
-function ensureAuthenticated(req, res, next) {
-  if (!req.header('Authorization')) {
-    return res.status(401).send({ message: 'Please make sure your request has an Authorization header' });
-  }
-  var token = req.header('Authorization').split(' ')[1];
-
-  var payload = null;
-  try {
-    payload = jwt.decode(token, config.TOKEN_SECRET);
-  }
-  catch (err) {
-    return res.status(401).send({ message: err.message });
-  }
-
-  if (payload.exp <= moment().unix()) {
-    return res.status(401).send({ message: 'Token has expired' });
-  }
-  req.user = payload.sub;
-  next();
-}
+// function ensureAuthenticated(req, res, next) {
+//   if (!req.header('Authorization')) {
+//     return res.status(401).send({ message: 'Please make sure your request has an Authorization header' });
+//   }
+//   var token = req.header('Authorization').split(' ')[1];
+//
+//   var payload = null;
+//   try {
+//     payload = jwt.decode(token, config.TOKEN_SECRET);
+//   }
+//   catch (err) {
+//     return res.status(401).send({ message: err.message });
+//   }
+//
+//   if (payload.exp <= moment().unix()) {
+//     return res.status(401).send({ message: 'Token has expired' });
+//   }
+//   req.user = payload.sub;
+//   next();
+// }
 
 /*
  |--------------------------------------------------------------------------
@@ -55,21 +55,18 @@ function ensureAuthenticated(req, res, next) {
  |--------------------------------------------------------------------------
  */
 app.post('/auth/login', function(req, res) {
-  var user = {
-    email: req.body.email,
-    password: req.body.password
-  }
-  console.log('declared user ' + user.email);
-  db.get_user([req.body.email], function(err, user){
-    if (err) throw err;
 
-    if (!user[0]) {
+
+  db.users.findOne({email:req.body.email}, function(err, user){
+    if (err) throw err;
+    console.log('USER!! ' + user.email);
+    if (!user) {
       console.log('hit with no user');
       res.status(401).send({ success: false, message: 'Authentication failed. User not found.' });
     } else if (user) {
 
       // check if password matches
-      if (user[0].password != req.body.password) {
+      if (user.password != req.body.password) {
         console.log('hit with wrong password');
         res.status(401).send({ success: false, message: 'Authentication failed. Wrong password.' });
       }
@@ -77,9 +74,7 @@ app.post('/auth/login', function(req, res) {
         console.log('DINGDINGDINGDINGDINGDINGDING');
         // if user is found and password is right
         // create a token
-        jwt.sign(user[0], config.secret, {
-          expiresIn: 1440 // expires in 24 hours
-        }, function(err, token){
+        jwt.sign(user, config.secret, {}, function(err, token){
           res.status(200).json({
             token: token,
             msg: 'ok',
@@ -106,7 +101,16 @@ app.listen(port, function () {
   console.log("now listening on port... " + port);
 })
 
-
+app.get('/auth/me', (req, res) => {
+    const token = req.get('Authorization');
+    console.log('token ' + token);
+    jwt.verify(token, config.secret, (err, decoded) => {
+        console.log('error '+  err);
+        console.log('DEEECODED!! ' + decoded);
+        if (err) return res.status(401).send(err);
+        return res.status(200).json(decoded)
+    })
+})
 // =====================
 // Local AUTH WITH SEMO
 // =====================

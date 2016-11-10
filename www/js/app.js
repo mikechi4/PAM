@@ -105,24 +105,47 @@
 
 //-------- loginController & loginService handles the account creation -----------
 
-.controller('loginCtrl', function($scope, $state, $auth) {
-// $scope.email = 'user@email.com';
-// $scope.password='password'
+.controller('loginCtrl', function($scope, $state, $auth, $http) {
+$scope.email = 'user@email.com';
+$scope.password='password'
+    // $scope.login = function(email, password) {
+    //   $scope.user = {
+    //     email: email,
+    //     password: password
+    //   }
+    //
+    //   $auth.login($scope.user)
+    //     .then(function(response) {
+    //       $auth.setToken(response.data.token);
+    //       $state.go('tabs.home');
+    //     })
+    //     .catch(function(error){
+    //       $scope.error = error.data.message
+    //
+    //     })
+    // }
     $scope.login = function(email, password) {
-      $scope.user = {
-        email: email,
-        password: password
-      }
-      console.log($scope.user);
-      $auth.login($scope.user)
-        .then(function(response) {
-          $auth.setToken(response.data.token);
-          $state.go('tabs.home');
-        })
-        .catch(function(error){
-          $scope.error = error.data.message;
-        })
-    }
+    console.log('logging in')
+    $http({
+        method: 'POST',
+        url: 'http://localhost:3000/auth/login',
+        data: {
+            email: email,
+            password: password
+        }
+    })
+    .then(function(res) {
+        sessionStorage.setItem('myToken', res.data.token);
+        $scope.user = res.data.user;
+        $state.go('tabs.home');
+        console.log('user ' + $scope.user);
+    })
+      .catch(function(error){
+        $scope.error = error.data.message
+
+      })
+}
+
 })
 
 // .service('loginService', function($http) {
@@ -139,7 +162,8 @@
 // })
 
 //-------- homeController & homeService handles retrieval of transactions-----------
-  .controller('homeCtrl', function($scope, $ionicPopup, homeService){
+  .controller('homeCtrl', function($scope, $ionicPopup, $http, homeService){
+
 
     $scope.addTransPopup = function(){
       $scope.data={}
@@ -252,6 +276,20 @@
       })
 
     }
+
+    $scope.getUser = function(){
+      $http({
+        method:'GET',
+        url:'http://localhost:3000/auth/me',
+        headers: {
+          'Authorization': sessionStorage.getItem('myToken')
+        }
+      }).then(function(response){
+        $scope.data = response.data
+        console.log($scope.data);
+      })
+    }
+    $scope.getUser();
     $scope.getTransactions();
     $scope.getCategories();
 
@@ -368,7 +406,7 @@
   .service('editService', function($http) {
     this.getThisTransaction = function(id) {
       return $http({
-        method:'GET',
+        method: 'GET',
         url:'http://localhost:3000/edit/?id=' + id
       })
     }
