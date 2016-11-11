@@ -31,14 +31,14 @@ module.exports= {
 
     db.users.findOne({email:req.body.email}, function(err, user){
       if (err) throw err;
-      console.log('USER!! ' + user.email);
+      console.log('USER!! ' + req.body.email);
       if (!user) {
         console.log('hit with no user');
         res.status(401).send({ success: false, message: 'Authentication failed. User not found.' });
       } else if (user) {
 
         // check if password matches
-        if (user.password != req.body.password) {
+        if (req.body.password != req.body.password) {
           console.log('hit with wrong password');
           res.status(401).send({ success: false, message: 'Authentication failed. Wrong password.' });
         }

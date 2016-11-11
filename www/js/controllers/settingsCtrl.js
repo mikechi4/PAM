@@ -1,5 +1,7 @@
 angular.module('starter')
-  .controller('settingsCtrl', function($scope){
-    $scope.message = 'hello'
+  .controller('settingsCtrl', function($scope, $state){
+    $scope.logout = function() {
+      sessionStorage.removeItem('myToken');
+    }
 
   })

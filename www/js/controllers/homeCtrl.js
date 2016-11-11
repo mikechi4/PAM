@@ -175,6 +175,7 @@ angular.module('starter')
     $scope.getGoal = function(){
       homeService.getGoal().then(function(response){
         $scope.spendGoal = response.data[0];
+        $scope.getPercentage();
       });
     }
 
@@ -186,18 +187,25 @@ angular.module('starter')
     //   $http({
     //     method:'GET',
     //     url:'http://localhost:3000/auth/me',
-    //     headers: {
-    //       'Authorization': sessionStorage.getItem('myToken')
-    //     }
+        // headers: {
+        //   'Authorization': 'Bearer' + sessionStorage.getItem('myToken')
+        // }
     //   }).then(function(response){
     //     $scope.data = response.data
     //     console.log($scope.data);
     //   })
     // }
-    // // $scope.getUser();
-    $scope.getGoal();
+    // $scope.getUser();
+    $scope.getPercentage = function(){
+      var percent = ($scope.spendTotal/$scope.spendGoal.budget_amt) * 100;
+      $('#bar').css('width', percent + '%');
+      $scope.percent = percent;
+      console.log(percent);
+    }
+
     $scope.getTransactions();
     $scope.getCategories();
+    $scope.getGoal();
 
     $scope.deleteTransaction = function(id){
       homeService.deleteTransaction(id);

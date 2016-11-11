@@ -6,9 +6,9 @@
     <input type="text" name="name" placeholder="$0.00" ng-model="spendGoal.budget_amt" class="spend-goal"><button ng-click="editGoal(spendGoal)"><i class="icon ion-compose"></i></button>
 
     <h5>Current total spent this month: ${{spendTotal}}</h5>
-    <h5>Current budget fulfilment: {{(spendTotal/spendGoal.budget_amt) * 100 | number: 2}}%</h5>
+    <h5>Current budget fulfilment: </h5>
     <div id="progress">
-      <span id="percent">{{(spendTotal/spendGoal.budget_amt) * 100 | number: 2}}%</span>
+      <span id="percent">{{percent | number: 2}}%</span>
       <div id="bar"></div>
     </div>
 
@@ -25,14 +25,16 @@
         <ion-item>
           <div  >
             <div class="info">
-              <p>{{transaction.name}}</p>
+              <h2>{{transaction.name}}</h2>
               <p>{{transaction.category}}</p>
             </div>
             <div class="nums">
-              <span class="item-note">${{transaction.amount}}</span>
+              <span class="item-note"><h3>${{transaction.amount}}</h3></span>
               <span class="item-note">{{transaction.purchase_date}}</span>
             </div>
-            <ion-option-button class="button-assertive" ng-click="editPopup({id: transaction.transaction_id})"><button class="ion icon-top ion-ios-compose-outline"> Edit</button></ion-option-button>
+            <ion-option-button class="button-assertive" ng-click="editPopup({id: transaction.transaction_id})">
+              <button class="ion icon-top ion-ios-compose-outline"></button>
+            </ion-option-button>
           </div>
 
         </ion-item>

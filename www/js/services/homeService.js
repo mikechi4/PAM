@@ -4,28 +4,40 @@ angular.module('starter')
   this.deleteTransaction = function(id) {
     $http({
       method:'DELETE',
-      url:destUrl + '/edit/?id=' + id
+      url:destUrl + '/edit/?id=' + id,
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('myToken')
+      },
     })
   }
 
   this.getGoal = function(){
     return $http({
       method:'GET',
-      url:destUrl + '/home/budget'
+      url:destUrl + '/home/budget',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('myToken')
+      }
     })
   }
 
   this.getThisTransaction = function(id) {
     return $http({
       method: 'GET',
-      url:destUrl + '/edit/?id=' + id
+      url:destUrl + '/edit/?id=' + id,
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('myToken')
+      },
     })
   }
 
   this.getTransactions = function(){
     return $http({
       method: 'GET',
-      url:destUrl + '/home'
+      url:destUrl + '/home',
+      headers: {
+        'Authorization': 'Bearer ' +  sessionStorage.getItem('myToken')
+      }
     });
   }
 
@@ -33,6 +45,9 @@ angular.module('starter')
      $http({
       method:'POST',
       url: destUrl + '/transactions',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('myToken')
+      },
       data: {
         amount: amountSpent,
         category: category,
@@ -48,6 +63,9 @@ angular.module('starter')
     $http({
       method:'PUT',
       url:destUrl + '/edit',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('myToken')
+      },
       data: {
         transaction_id: id,
         amount: amountSpent,
@@ -62,6 +80,9 @@ angular.module('starter')
     $http({
       method: 'PUT',
       url: destUrl + '/home/goal',
+      headers: {
+        'Authorization': 'Bearer ' + sessionStorage.getItem('myToken')
+      },
       data: {
         spendId: spendGoal.budget_id,
         spendGoal: spendGoal.budget_amt

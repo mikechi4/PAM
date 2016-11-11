@@ -5,6 +5,7 @@ var middleware = require('./middleware.js');
 var config = require('./config.js')
 //token stuff
 var jwt = require('jsonwebtoken');
+var expressJWT = require('express-jwt')
 var cors = require('cors');
 var port = 3000;
 
@@ -15,7 +16,7 @@ var massiveServer = massive.connectSync({
 });
 
 app.use(cors());
-
+app.use(expressJWT({secret: config.secret}).unless({path: ['/signUp','/auth/login']}));
 app.use(bodyParser.json());
 app.set('db', massiveServer);
 var db = app.get('db');
