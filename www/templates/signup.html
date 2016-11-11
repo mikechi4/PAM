@@ -6,6 +6,7 @@
  </ion-nav-buttons>
   <ion-content class="login has-header">
     <h1>Sign Up Today</h1>
+        <h5 class="assertive">{{error}}</h5>
     <form name="myForm" novalidate>
       <div class="list">
         <label class="item item-input item-stacked-label">
@@ -17,14 +18,9 @@
           <input type="password" ng-model="newPassword"  name="password" ng-minlength="6" placeholder="Must be at least 6 characters" required/>
         </label>
       </div>
+
       <div class="padding">
-        <p ng-show="myForm.email.$error.required">* Username is required</p>
-        <p ng-show="myForm.email.$invalid && !myForm.email.$pristine">* Username must be an email</p>
-        <p ng-show="myForm.password.$error.required">* Password is required</p>
-        <p ng-show="myForm.password.$error.minlength">* Password longer than 6 characters</p>
-      </div>
-      <div class="padding">
-        <button class="button button-calm" ng-click="createUser(email, newPassword)" ng-disabled="myForm.$invalid">
+        <button class="button button-calm" ng-click="createUser(email, newPassword)" >
           <i class="icon ion-person-add"></i> Create Account
         </button>
       </div>

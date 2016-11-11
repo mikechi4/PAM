@@ -3,28 +3,37 @@ var db = app.get('db');
 var jwt = require('jsonwebtoken');
 var config = require('./config.js')
 // BCRYPT
-var bcrypt = require('bcryptjs');
-// HASH PASSWORD //
-function hashPassword(password) {
-    var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(password, salt);
-    return hash;
-}
+// var bcrypt = require('bcryptjs');
+// // HASH PASSWORD //
+// function hashPassword(password) {
+//     var salt = bcrypt.genSaltSync(10);
+//     var hash = bcrypt.hashSync(password, salt);
+//     return hash;
+// }
 
 module.exports= {
     addUser: function(req, res, next){
       var newUser = {
-        password: hashPassword(req.body.password),
+        password: req.body.password,
         email: req.body.email
       }
-
-      db.add_user([newUser.password, newUser.email], function(err, users) {
-        if (err) {
-          return res.send(err);
+      db.users.findOne({email:req.body.email}, function(err, user){
+        if(err) throw err;
+        if(!newUser.password || newUser.password.length < 6){
+            res.status(409).send({success: false, message: 'Password must be at least six characters'});
+        } else if (user){
+          res.status(409).send({success: false, message: 'Username already exists'});
+        } else {
+          db.add_user([newUser.password, newUser.email], function(err, users) {
+            if (err) {
+              return res.send(err);
+            }
+            delete users.password;
+            res.status(200).json(users);
+          })
         }
-        delete users.password;
-        res.status(200).json(users);
       })
+
     },
 
   getUser:  function(req, res, next) {
