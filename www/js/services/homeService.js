@@ -59,7 +59,6 @@ angular.module('starter')
   }
 
   this.editGoal = function(spendGoal) {
-    console.log('got the goal ' + spendGoal);
     $http({
       method: 'PUT',
       url: destUrl + '/home/goal',

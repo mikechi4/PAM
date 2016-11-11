@@ -84,8 +84,9 @@ module.exports= {
   },
 
   deleteTransaction: function(req, res, next) {
-    var t_id = req.query.id;
-    db.delete_transaction([t_id], function(err, transaction){
+    // var t_id = req.query.id;
+    db.transactions.destroy({transactio_id: req.query.id}, function(err, transaction){
+      console.log(err);
       res.status(200).end();
     })
   },
@@ -117,7 +118,7 @@ module.exports= {
       console.log('transaction object ' + editTransaction.transaction_id, editTransaction.amount, editTransaction.category);
     db.update_transaction([editTransaction.amount, editTransaction.category, editTransaction.purchase_date, editTransaction.name, editTransaction.transaction_id]
     ,function(err, users){
-      console.log('error ' + err);
+
       res.status(200).json(users);
     })
   },
@@ -130,10 +131,8 @@ module.exports= {
   },
 
   updateBudget: function(req,res,next) {
-    console.log('reqdatbody ' + req.body.spendId);
+
     db.budget.update({budget_id: req.body.spendId, budget_amt: req.body.spendGoal}, function(err, budget) {
-      console.log('ERRORRRRR ' + err);
-      console.log('BUDGETTT ' + budget);
       res.status(200).json(budget);
     })
   }

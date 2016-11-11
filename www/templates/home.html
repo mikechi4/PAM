@@ -8,9 +8,9 @@
     <h5>Current total spent this month: ${{spendTotal}}</h5>
     <h5>Current budget fulfilment: {{(spendTotal/spendGoal.budget_amt) * 100 | number: 2}}%</h5>
     <div id="progress">
-    <span id="percent">{{(spendTotal/spendGoal.budget_amt) * 100 | number: 2}}%</span>
-    <div id="bar"></div>
-</div>
+      <span id="percent">{{(spendTotal/spendGoal.budget_amt) * 100 | number: 2}}%</span>
+      <div id="bar"></div>
+    </div>
 
   </div>
 
@@ -20,40 +20,23 @@
         Add a transaction<button ng-click="addTransPopup()"><i class="icon ion-plus"></i></button>
 
     </div>
+    <div class="transactions" ng-repeat="transaction in transactions">
+      <ion-list>
+        <ion-item>
+          <div  >
+            <div class="info">
+              <p>{{transaction.name}}</p>
+              <p>{{transaction.category}}</p>
+            </div>
+            <div class="nums">
+              <span class="item-note">${{transaction.amount}}</span>
+              <span class="item-note">{{transaction.purchase_date}}</span>
+            </div>
+            <ion-option-button class="button-assertive" ng-click="editPopup({id: transaction.transaction_id})"><button class="ion icon-top ion-ios-compose-outline"> Edit</button></ion-option-button>
+          </div>
 
-    <div class="row header">
-      <div class="col col-20">
-        Name
-      </div>
-      <div class="col col-20">
-        Amount
-      </div>
-      <div class="col col-20">
-        Category
-      </div>
-      <div class="col col-20">
-        Date
-      </div>
-      <div class="col col-20">
-        Options
-      </div>
-    </div>
-    <div class="row" ng-repeat="transaction in transactions">
-      <div class="col col-20">
-        {{transaction.name}}
-      </div>
-      <div class="col col-20">
-        ${{transaction.amount}}
-      </div>
-      <div class="col col-20">
-        {{transaction.category}}
-      </div>
-      <div class="col col-20">
-        {{transaction.purchase_date}}
-      </div>
-      <div class="col col-20">
-        <!-- <a ui-sref="edit({id: transaction.transaction_id})">Edit</a> -->
-        <a ng-click="editPopup({id: transaction.transaction_id})">Edit</a>
+        </ion-item>
+      </ion-list>
       </div>
     </div>
   </div>
