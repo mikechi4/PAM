@@ -5,8 +5,6 @@ var middleware = require('./middleware.js');
 var config = require('./config.js')
 //token stuff
 var jwt = require('jsonwebtoken');
-
-
 var cors = require('cors');
 var port = 3000;
 
@@ -17,21 +15,25 @@ var massiveServer = massive.connectSync({
 });
 
 app.use(cors());
-app.use(middleware.addHeaders);
+
 app.use(bodyParser.json());
 app.set('db', massiveServer);
 var db = app.get('db');
 var controller = require('./dbController.js');
 app.get('/home/budget', controller.getBudget);
-app.post('/auth/login', controller.getUser);
 app.get('/home', controller.getTransactions);
 app.get('/edit', controller.getTransactionsById);
+app.get('/auth/me', controller.checkToken);
+
+app.post('/auth/login', controller.getUser);
 app.post('/signUp', controller.addUser);
 app.post('/transactions', controller.addTransaction);
+
 app.put('/edit', controller.updateTransaction);
+app.put('/home/goal', controller.updateBudget);
 
 app.delete('/edit', controller.deleteTransaction);
-app.get('/auth/me', controller.checkToken);
+
 app.listen(port, function () {
   console.log("now listening on port... " + port);
 })

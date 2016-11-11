@@ -1,6 +1,6 @@
 angular.module('starter')
 //-------- homeController & homeService handles retrieval of transactions-----------
-  .controller('homeCtrl', function($scope, $ionicPopup, $http, homeService){
+  .controller('homeCtrl', function($scope, $ionicPopup, $http, $state, homeService){
     var date = new Date();
     $scope.FromDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
 
@@ -29,15 +29,59 @@ angular.module('starter')
       homeService.addTransaction(name, amountSpent, purchaseDate, category);
     }
 
-    $scope.getGoal = function(){
-      homeService.getGoal().then(function(response){
-        $scope.spendGoal = response.data[0].budget_amt;
-      });
+    $scope.category="";
+    $scope.categories = [
+    {
+      display: 'Restaurant',
+      value: 'Restaurant'
+    },
+    {
+      display: 'Transportation',
+      value: 'Transportation'
+    },
+    {
+      display: 'Grocery',
+      value: 'Grocery'
+    },
+    {
+      display: 'Travel',
+      value: 'Travel'
+    },
+    {
+      display: 'Merchandise',
+      value: 'Merchandise'
+    },
+    {
+      display: 'Medical',
+      value: 'Medical'
+    },
+    {
+      display: 'Business Service',
+      value: 'Business Service'
+    },
+    {
+      display: 'Other',
+      value: 'Other'
     }
 
+    ]
+
     $scope.editPopup = function(id) {
-      console.log(id);
-      $scope.trans={};
+      var id = id.id
+        homeService.getThisTransaction(id).then(function(response){
+          $scope.info = response.data[0];
+          //bind values from service to input values on view
+          $scope.name = $scope.info.name;
+          $scope.amountSpent = $scope.info.amount;
+          $scope.category = $scope.info.category;
+          $scope.purchaseDate = $scope.info.purchase_date;
+        })
+
+        $scope.updateTransaction = function(name, amount, date, category){
+          homeService.updateTransaction(id, name, amount, date, category);
+          $state.go('tabs.home')
+        }
+
       var editTrans = $ionicPopup.show({
         templateUrl:'/templates/edit.html',
         title: 'Edit/Delete Transaction',
@@ -45,17 +89,16 @@ angular.module('starter')
         cssClass: 'popup-vertical-buttons',
         buttons:[
           {
-            text: 'Cancel'
-          },
-          {
-            text: 'Submit'
-          },
-          {
             text: 'Delete',
+            type:'button-assertive',
             onTap: function(e){
               $scope.deleteTransaction(id);
             }
+          },
+          {
+            text: 'Cancel'
           }
+
         ]
       })
     }
@@ -75,6 +118,10 @@ angular.module('starter')
         $scope.spendTotal = $scope.spendTotal.toFixed(2);
 
       })
+    }
+
+    $scope.updateTransaction = function(id, name, amountSpent, purchaseDate, category) {
+      homeService.updateTransaction(id, name, amountSpent, purchaseDate, category);
     }
 
     // Used for populating d3Chart
@@ -123,6 +170,16 @@ angular.module('starter')
         }
       })
 
+    }
+
+    $scope.getGoal = function(){
+      homeService.getGoal().then(function(response){
+        $scope.spendGoal = response.data[0];
+      });
+    }
+
+    $scope.editGoal = function(spendGoal) {
+      homeService.editGoal(spendGoal);
     }
 
     // $scope.getUser = function(){

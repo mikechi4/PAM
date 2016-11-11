@@ -106,6 +106,7 @@ module.exports= {
   },
 
   updateTransaction: function(req, res, next){
+    console.log('about to update');
     var editTransaction = {
       transaction_id: req.body.transaction_id,
       amount: req.body.amount,
@@ -113,10 +114,11 @@ module.exports= {
       purchase_date: req.body.purchaseDate,
       name: req.body.name
     }
-
+      console.log('transaction object ' + editTransaction.transaction_id, editTransaction.amount, editTransaction.category);
     db.update_transaction([editTransaction.amount, editTransaction.category, editTransaction.purchase_date, editTransaction.name, editTransaction.transaction_id]
     ,function(err, users){
-      res.status(200).end();
+      console.log('error ' + err);
+      res.status(200).json(users);
     })
   },
 
@@ -124,6 +126,15 @@ module.exports= {
 
     db.get_goal(function(err, budget) {
     res.status(200).json(budget);
+    })
+  },
+
+  updateBudget: function(req,res,next) {
+    console.log('reqdatbody ' + req.body.spendId);
+    db.budget.update({budget_id: req.body.spendId, budget_amt: req.body.spendGoal}, function(err, budget) {
+      console.log('ERRORRRRR ' + err);
+      console.log('BUDGETTT ' + budget);
+      res.status(200).json(budget);
     })
   }
 }

@@ -3,12 +3,12 @@
   <h1>Welcome</h1>
   <div class="card padding summary">
     <h4>Your spending goal for {{FromDate | date: 'MMMM'}} is:</h4>
-    <input type="text" name="name" placeholder="$0.00" ng-model="spendGoal" class="spend-goal"><button ng-click="editGoal(spendGoal)"><i class="icon ion-compose"></i></button>
+    <input type="text" name="name" placeholder="$0.00" ng-model="spendGoal.budget_amt" class="spend-goal"><button ng-click="editGoal(spendGoal)"><i class="icon ion-compose"></i></button>
 
     <h5>Current total spent this month: ${{spendTotal}}</h5>
-    <h5>Current budget fulfilment: {{(spendTotal/spendGoal) * 100 | number: 2}}%</h5>
+    <h5>Current budget fulfilment: {{(spendTotal/spendGoal.budget_amt) * 100 | number: 2}}%</h5>
     <div id="progress">
-    <span id="percent">{{(spendTotal/spendGoal) * 100 | number: 2}}%</span>
+    <span id="percent">{{(spendTotal/spendGoal.budget_amt) * 100 | number: 2}}%</span>
     <div id="bar"></div>
 </div>
 
