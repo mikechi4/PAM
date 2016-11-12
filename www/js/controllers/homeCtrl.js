@@ -153,38 +153,41 @@ angular.module('starter')
 
       $scope.data = [];
 
-      // homeService.getTransactions().then(function(response) {
-      //   var response = response.data;
-      //   for(var i = 0; i < response.length; i++) {
-      //     var ctgObj = {key: response[i].category, y: response[i].amount * 1};
-      //     if($scope.data.length == 0) {
-      //       $scope.data.push(ctgObj);
-      //     } else {
-      //       var flag = false;
-      //       for(var j = 0; j < $scope.data.length; j++){
-      //         if(ctgObj.key == $scope.data[j].key) {
-      //           $scope.data[j].y += ctgObj.y * 1
-      //           flag = true;
-      //         }
-      //       }
-      //       if(!flag){
-      //         $scope.data.push(ctgObj)
-      //       }
-      //     }
-      //   }
-      // })
+      homeService.getTransactions(id).then(function(response) {
+        var response = response.data;
+        for(var i = 0; i < response.length; i++) {
+          var ctgObj = {key: response[i].category, y: response[i].amount * 1};
+          if($scope.data.length == 0) {
+            $scope.data.push(ctgObj);
+          } else {
+            var flag = false;
+            for(var j = 0; j < $scope.data.length; j++){
+              if(ctgObj.key == $scope.data[j].key) {
+                $scope.data[j].y += ctgObj.y * 1
+                flag = true;
+              }
+            }
+            if(!flag){
+              $scope.data.push(ctgObj)
+            }
+          }
+        }
+      })
 
     }
 
     $scope.getGoal = function(){
-      homeService.getGoal().then(function(response){
+
+      homeService.getGoal(id).then(function(response){
         $scope.spendGoal = response.data[0];
         $scope.getPercentage();
       });
     }
 
     $scope.editGoal = function(spendGoal) {
-      homeService.editGoal(spendGoal);
+    
+      homeService.editGoal(spendGoal, id);
+
     }
 
     // $scope.getUser = function(){

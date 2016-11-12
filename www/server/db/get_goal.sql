@@ -1,1 +1,1 @@
-select * from budget where user_id = 21;
+select * from budget where user_id = $1;

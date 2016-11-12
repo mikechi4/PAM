@@ -82,9 +82,7 @@ module.exports= {
 
   getTransactions: function(req, res, next){
     var id = req.query.user_id;
-    console.log('body id ' + id);
     db.get_transactions([id], function(err, users){
-      console.log('Get Transactions error ' + err);
       res.status(200).json(users);
     })
   },
@@ -113,16 +111,14 @@ module.exports= {
       user_id: req.body.user_id,
       name: req.body.name
     }
-    console.log('REQDATBODY ID ' + newTransaction.user_id);
+
     db.insert_transaction([newTransaction.amount, newTransaction.category, newTransaction.purchase_date, newTransaction.user_id, newTransaction.name]
     ,function(err, users) {
-      console.log('ERRRRR ' + err);
       res.status(200).json(users);
     })
   },
 
   updateTransaction: function(req, res, next){
-    console.log('about to update');
     var editTransaction = {
       transaction_id: req.body.transaction_id,
       amount: req.body.amount,
@@ -130,7 +126,7 @@ module.exports= {
       purchase_date: req.body.purchaseDate,
       name: req.body.name
     }
-      console.log('transaction object ' + editTransaction.transaction_id, editTransaction.amount, editTransaction.category);
+
     db.update_transaction([editTransaction.amount, editTransaction.category, editTransaction.purchase_date, editTransaction.name, editTransaction.transaction_id]
     ,function(err, users){
 
@@ -139,16 +135,26 @@ module.exports= {
   },
 
   getBudget: function(req, res, next) {
-
-    db.get_goal(function(err, budget) {
+    db.get_goal([req.query.id],function(err, budget) {
     res.status(200).json(budget);
     })
   },
 
   updateBudget: function(req,res,next) {
-
-    db.budget.update({budget_id: req.body.spendId, budget_amt: req.body.spendGoal}, function(err, budget) {
-      res.status(200).json(budget);
+    //find if user's transaction exists in DB yet
+    console.log('user id in updateBudget ' + req.body.user_id);
+    db.budget.find({user_id: req.body.user_id}, function(err, user){
+      //if a user is found, update their budget
+      if(user.length > 0){
+        db.budget.update({budget_id: req.body.spendId, budget_amt: req.body.spendGoal}, function(err, budget) {
+          res.status(200).json(budget);
+        })
+        //user not found. insert a fresh budget
+      } else if(user.length == 0){
+        db.budget.insert({user_id: req.body.user_id, budget_amt: req.body.spendGoal }, function(err, budget){
+          res.status(200).json(budget)
+        })
+      }
     })
   }
 }

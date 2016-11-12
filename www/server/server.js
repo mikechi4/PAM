@@ -16,7 +16,7 @@ var massiveServer = massive.connectSync({
 });
 
 app.use(cors());
-app.use(expressJWT({secret: config.secret}).unless({path: ['/signUp','/auth/login']}));
+// app.use(expressJWT({secret: config.secret}).unless({path: ['/signUp','/auth/login']}));
 app.use(bodyParser.json());
 app.set('db', massiveServer);
 var db = app.get('db');

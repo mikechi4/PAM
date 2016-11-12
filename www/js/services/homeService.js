@@ -11,10 +11,10 @@ angular.module('starter')
     })
   }
 
-  this.getGoal = function(){
+  this.getGoal = function(id){
     return $http({
       method:'GET',
-      url:destUrl + '/home/budget',
+      url:destUrl + '/home/budget/?id=' + id,
       headers: {
         'Authorization': 'Bearer ' + sessionStorage.getItem('myToken')
       }
@@ -77,7 +77,8 @@ angular.module('starter')
     })
   }
 
-  this.editGoal = function(spendGoal) {
+  this.editGoal = function(spendGoal,id) {
+    console.log('id fro edit goal ' + id);
     $http({
       method: 'PUT',
       url: destUrl + '/home/goal',
@@ -86,7 +87,8 @@ angular.module('starter')
       },
       data: {
         spendId: spendGoal.budget_id,
-        spendGoal: spendGoal.budget_amt
+        spendGoal: spendGoal.budget_amt,
+        user_id: id
       }
     })
   }
