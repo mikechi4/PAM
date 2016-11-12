@@ -6,6 +6,7 @@ angular.module('starter')
     console.log('THE ID!!' + id);
     $scope.FromDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
 
+
     $scope.addTransPopup = function(){
       $scope.entry={}
       var addPopup = $ionicPopup.show({
@@ -185,7 +186,7 @@ angular.module('starter')
     }
 
     $scope.editGoal = function(spendGoal) {
-    
+
       homeService.editGoal(spendGoal, id);
 
     }
@@ -216,4 +217,23 @@ angular.module('starter')
     $scope.deleteTransaction = function(id){
       homeService.deleteTransaction(id);
     }
+
+//     $scope.doRefresh = function() {
+//       homeService.getGoal(id).then(function(response){
+//         $scope.spendGoal = response.data[0];
+//         $scope.getPercentage();
+//       })
+//       .finally(function() {
+//   // Stop the ion-refresher from spinning
+//   $scope.$broadcast('scroll.refreshComplete');
+// });
+
+    $scope.doRefresh = function() {
+      $scope.getTransactions();
+      $scope.getCategories();
+      $scope.getGoal();
+      $scope.$broadcast('scroll.refreshComplete');
+
+  }
+
   })

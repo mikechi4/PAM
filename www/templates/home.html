@@ -1,5 +1,7 @@
 <ion-view view-title="Home">
 <ion-content class="padding has-header" >
+  <ion-refresher class="" pulling-text="Pull to refresh..." on-refresh="doRefresh()">
+</ion-refresher>
   <h1>Welcome</h1>
   <div class="card padding summary">
     <h4>Your spending goal for {{FromDate | date: 'MMMM'}} is:</h4>
