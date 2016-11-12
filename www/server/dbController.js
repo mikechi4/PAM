@@ -59,7 +59,8 @@ module.exports= {
             res.status(200).json({
               token: token,
               msg: 'ok',
-              user: req.body.email
+              user: req.body.email,
+              id: user.user_id
             })
           })
         }
@@ -80,7 +81,10 @@ module.exports= {
   },
 
   getTransactions: function(req, res, next){
-    db.get_transactions(function(err, users){
+    var id = req.query.user_id;
+    console.log('body id ' + id);
+    db.get_transactions([id], function(err, users){
+      console.log('Get Transactions error ' + err);
       res.status(200).json(users);
     })
   },
@@ -94,23 +98,25 @@ module.exports= {
 
   deleteTransaction: function(req, res, next) {
     // var t_id = req.query.id;
-    db.transactions.destroy({transactio_id: req.query.id}, function(err, transaction){
+    db.transactions.destroy({transaction_id: req.query.id}, function(err, transaction){
       console.log(err);
       res.status(200).end();
     })
   },
 
   addTransaction: function(req, res, next) {
+
     var newTransaction = {
       amount: req.body.amount,
       category: req.body.category,
       purchase_date: req.body.purchase_date,
-      user_id: 21,
+      user_id: req.body.user_id,
       name: req.body.name
     }
-
-    db.insert_transaction([newTransaction.amount, newTransaction.category, newTransaction.purchase_date, newTransaction.name]
+    console.log('REQDATBODY ID ' + newTransaction.user_id);
+    db.insert_transaction([newTransaction.amount, newTransaction.category, newTransaction.purchase_date, newTransaction.user_id, newTransaction.name]
     ,function(err, users) {
+      console.log('ERRRRR ' + err);
       res.status(200).json(users);
     })
   },

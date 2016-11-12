@@ -31,17 +31,18 @@ angular.module('starter')
     })
   }
 
-  this.getTransactions = function(){
+  this.getTransactions = function(id){
+    console.log('id inside service ' + id);
     return $http({
       method: 'GET',
-      url:destUrl + '/home',
+      url:destUrl + '/home/?user_id=' + id,
       headers: {
         'Authorization': 'Bearer ' +  sessionStorage.getItem('myToken')
       }
     });
   }
 
-  this.addTransaction = function(name, amountSpent, purchaseDate, category) {
+  this.addTransaction = function(name, amountSpent, purchaseDate, category, id) {
      $http({
       method:'POST',
       url: destUrl + '/transactions',
@@ -52,7 +53,7 @@ angular.module('starter')
         amount: amountSpent,
         category: category,
         purchase_date: purchaseDate,
-        user_id: 21,
+        user_id: id,
         name: name
       }
     })

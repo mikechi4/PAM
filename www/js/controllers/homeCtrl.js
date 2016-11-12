@@ -1,7 +1,9 @@
 angular.module('starter')
 //-------- homeController & homeService handles retrieval of transactions-----------
-  .controller('homeCtrl', function($scope, $ionicPopup, $http, $state, homeService){
+  .controller('homeCtrl', function($scope, $ionicPopup, $http, $state, $stateParams, homeService){
     var date = new Date();
+    var id = $stateParams.id;
+    console.log('THE ID!!' + id);
     $scope.FromDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
 
     $scope.addTransPopup = function(){
@@ -18,15 +20,15 @@ angular.module('starter')
             text:'Submit',
             type:'button-positive',
             onTap: function(e) {
-              $scope.addTransaction($scope.entry.name, $scope.entry.amountSpent, $scope.entry.purchaseDate, $scope.entry.category);
+              $scope.addTransaction($scope.entry.name, $scope.entry.amountSpent, $scope.entry.purchaseDate, $scope.entry.category, id);
             }
           }
         ]
       })
     }
 
-    $scope.addTransaction = function(name, amountSpent, purchaseDate, category){
-      homeService.addTransaction(name, amountSpent, purchaseDate, category);
+    $scope.addTransaction = function(name, amountSpent, purchaseDate, category, id){
+      homeService.addTransaction(name, amountSpent, purchaseDate, category, id);
     }
 
     $scope.category="";
@@ -103,11 +105,13 @@ angular.module('starter')
       })
     }
 
-    $scope.getTransactions = function() {
+    $scope.getTransactions = function(id) {
+      var id = $stateParams.id;
+
       $scope.spendTotal = 0;
       //getTransactions promise handles data from db transactions and
       //handles sum of all transactions to display on home page
-      homeService.getTransactions().then(function(response) {
+      homeService.getTransactions(id).then(function(response) {
         $scope.transactions = response.data;
           //get total of all transactions posted
           for(var i = 0; i < $scope.transactions.length; i++) {
@@ -149,26 +153,26 @@ angular.module('starter')
 
       $scope.data = [];
 
-      homeService.getTransactions().then(function(response) {
-        var response = response.data;
-        for(var i = 0; i < response.length; i++) {
-          var ctgObj = {key: response[i].category, y: response[i].amount * 1};
-          if($scope.data.length == 0) {
-            $scope.data.push(ctgObj);
-          } else {
-            var flag = false;
-            for(var j = 0; j < $scope.data.length; j++){
-              if(ctgObj.key == $scope.data[j].key) {
-                $scope.data[j].y += ctgObj.y * 1
-                flag = true;
-              }
-            }
-            if(!flag){
-              $scope.data.push(ctgObj)
-            }
-          }
-        }
-      })
+      // homeService.getTransactions().then(function(response) {
+      //   var response = response.data;
+      //   for(var i = 0; i < response.length; i++) {
+      //     var ctgObj = {key: response[i].category, y: response[i].amount * 1};
+      //     if($scope.data.length == 0) {
+      //       $scope.data.push(ctgObj);
+      //     } else {
+      //       var flag = false;
+      //       for(var j = 0; j < $scope.data.length; j++){
+      //         if(ctgObj.key == $scope.data[j].key) {
+      //           $scope.data[j].y += ctgObj.y * 1
+      //           flag = true;
+      //         }
+      //       }
+      //       if(!flag){
+      //         $scope.data.push(ctgObj)
+      //       }
+      //     }
+      //   }
+      // })
 
     }
 
@@ -200,7 +204,6 @@ angular.module('starter')
       var percent = ($scope.spendTotal/$scope.spendGoal.budget_amt) * 100;
       $('#bar').css('width', percent + '%');
       $scope.percent = percent;
-      console.log(percent);
     }
 
     $scope.getTransactions();

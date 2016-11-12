@@ -14,9 +14,11 @@ angular.module('starter')
       })
       .then(function(res) {
           sessionStorage.setItem('myToken', res.data.token);
-          $scope.user = res.data.user;
-          $state.go('tabs.home');
-          console.log('user ' + $scope.user);
+          $scope.data = res.data;
+          console.log(res.data);
+          $state.go('tabs.home',{id:$scope.data.id});
+          console.log('user ' + $scope.data.user);
+          console.log('user id at login ' + $scope.data.id);
       })
         .catch(function(error){
           $scope.error = error.data.message

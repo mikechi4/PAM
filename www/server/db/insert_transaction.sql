@@ -1,2 +1,2 @@
 insert into transactions (amount, category, purchase_date, user_id, name)
-  values ($1, $2, $3, 21, $4);
+  values ($1, $2, $3, $4, $5);

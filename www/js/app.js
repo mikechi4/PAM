@@ -49,7 +49,10 @@
         })
 
         .state('tabs.home', {
-          url: '/home',
+          url: '/home/:id',
+          params:{
+            id:null
+          },
           views: {
             'home-tab': {
               templateUrl: 'templates/home.html',
