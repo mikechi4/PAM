@@ -6,6 +6,11 @@
   align-items: center;
 }
 
+.card {
+  background: #efe6b1;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
 .center {
   text-align: center;
 }
@@ -45,11 +50,13 @@ input {
   border-top: 1px solid black;
 }
 
+
 #progress {
  width: 100%;
  border: 1px solid black;
  position: relative;
  padding: 3px;
+ background: white;
 }
 
 #percent {
@@ -63,9 +70,9 @@ input {
  width: 0%;
 }
 
-.transcations {
-  /*display: flex;
-  justify-content: space-between;*/
+.spend-goal {
+  display: flex;
+  justify-content: center;
 }
 .info{
   float: left;

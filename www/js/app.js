@@ -82,5 +82,14 @@
             }
           }
         })
+
+        .state('tabs.history', {
+          url: '/history',
+          views: {
+            'history-tab': {
+              templateUrl: 'templates/history.html'
+            }
+          }
+        })
       $urlRouterProvider.otherwise('/login');
     })
