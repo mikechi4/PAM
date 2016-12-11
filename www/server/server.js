@@ -35,6 +35,7 @@ app.put('/home/goal', controller.updateBudget);
 
 app.delete('/edit', controller.deleteTransaction);
 
+module.exports = app;
 app.listen(port, function () {
   console.log("now listening on port... " + port);
 })

@@ -1,7 +1,7 @@
 angular.module('starter')
   .controller('loginCtrl', function($scope, $state, $auth, $http) {
-  $scope.email = 'user@email.com';
-  $scope.password='password'
+  // $scope.email = 'user@email.com';
+  // $scope.password='password'
   $scope.login = function(email, password) {
     console.log('logging in')
       $http({

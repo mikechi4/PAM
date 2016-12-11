@@ -32,7 +32,6 @@ angular.module('starter')
   }
 
   this.getTransactions = function(id){
-    console.log('id inside service ' + id);
     return $http({
       method: 'GET',
       url:destUrl + '/home/?user_id=' + id,

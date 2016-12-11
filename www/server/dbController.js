@@ -3,13 +3,13 @@ var db = app.get('db');
 var jwt = require('jsonwebtoken');
 var config = require('./config.js')
 // BCRYPT
-// var bcrypt = require('bcryptjs');
-// // HASH PASSWORD //
-// function hashPassword(password) {
-//     var salt = bcrypt.genSaltSync(10);
-//     var hash = bcrypt.hashSync(password, salt);
-//     return hash;
-// }
+var bcrypt = require('bcryptjs');
+// HASH PASSWORD //
+function hashPassword(password) {
+    var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(password, salt);
+    return hash;
+}
 
 module.exports= {
     addUser: function(req, res, next){
@@ -47,7 +47,8 @@ module.exports= {
       } else if (user) {
 
         // check if password matches
-        if (req.body.password != req.body.password) {
+
+        if (req.body.password != user.password) {
           console.log('hit with wrong password');
           res.status(401).send({ success: false, message: 'Authentication failed. Wrong password.' });
         }
