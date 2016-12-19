@@ -14,3 +14,6 @@ library.
 <li><a href="http://expressjs.com/">ExpressJS</a></li>
 <li><a href="http://nvd3.org/examples/">NVD3</a></li>
 <li><a href="http://ionicframework.com/">Ionic</a></li>
+
+<h3>Screenshots</h3>
+To view screenshots from this project, please visit this <a href="http://imgur.com/a/ASrRj">link</a>
